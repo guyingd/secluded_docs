@@ -13,12 +13,6 @@ keywords:
 
 ## 存放学习Secluded词库变量资料的地方
 
-:::danger **词库路径**  
-Android端 词库编辑后需要重新导入 并且刷新进行重新装载词库  
-Windows端 词库编辑后需要重新 执行 load 命令  
-Android端 词库存储路径  [`/storage/emulated/0/Android/data/mcsq.nxa.secluded/dic_list/`](#)  
-Windows端 词库存储路径 主程序运行目录/dic_list/  
-:::
 
 :::info **修复内容**   [`v2022-08-20`](#)  
 修复群成员彩色昵称乱码问题  

@@ -1,7 +1,9 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 // 代码高亮插件
+// @ts-ignore
 const lightCodeTheme = require("prism-react-renderer/themes/github");
+// @ts-ignore
 const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
 /** @type {import('@docusaurus/types').Config} */
@@ -35,6 +37,7 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
+          // @ts-ignore
           sidebarPath: require.resolve("./sidebars.js"),
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
@@ -52,6 +55,7 @@ const config = {
             "https://github.com/guyingd/secluded_docs/tree/main",
         },
         theme: {
+          // @ts-ignore
           customCss: require.resolve("./src/css/custom.css"),
         },
       }),
@@ -70,6 +74,7 @@ const config = {
     "@docusaurus/theme-live-codeblock",
     [
       //搜索插件
+      // @ts-ignore
       require.resolve("@easyops-cn/docusaurus-search-local"),
       {
         hashed: true,
@@ -96,8 +101,20 @@ const config = {
             position: "left",
             items: [
               {
+                label: "关于",
+                to: "docs/intro/",
+              },
+              {
                 label: "变量",
+                to: "docs/front/",
+              },
+              {
+                label: "插件",
                 to: "docs/back/",
+              },
+              {
+                label: "教程",
+                to: "docs/jiaocheng/",
               },
             ],
           },
@@ -266,6 +283,7 @@ const config = {
         ],
       },
       prism: {
+        // @ts-ignore
         theme: require("prism-react-renderer/themes/dracula"),
         darkTheme: darkCodeTheme,
         additionalLanguages: ["java"],

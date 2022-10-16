@@ -1,0 +1,291 @@
+---
+title: 基础变量 # 文章标题
+date: 2022-10-16 # 文章修改时间
+authors: Guying # 作者昵称
+tags: [变量] # Tag标签
+---
+
+# 编写时间
+
+:::danger **变量大全&系统词库**  
+
+词库引擎 Lexicon(简称"Lex")   
+最大优点就是词库语句解析速度非常快 (｢･ω･)  
+｢嘿 三百万行的词库平均1.5秒装载完毕(其实还可以压缩至几百毫秒的   
+我觉得没有必要 也写起来也麻烦 也就不优化了 嘿嘿嘿) 但是瞬时内存占用很大   
+当然了很少很少有人写到万行的词库 百万行的词库也就...  
+
+引擎成立 [`2021-07-18`](#)  
+词库编辑者  [`MCSQNXA(作者)`](http://wpa.qq.com/msgrd?v=3&uin=3337140142&site=qq&menu=yes
+) [`Guying(docs网站作者)`](http://wpa.qq.com/msgrd?v=3&uin=2739218253&site=qq&menu=yes)  
+最后编辑时间  [`2022-08-07-17-59`](#)  
+
+:::
+
+## 注释
+
+```ts
+//我是注释 类型1
+##我是注释 类型2
+&&我是注释 类型3
+//注释方式一共有三种看个人喜好吧(类型1 2 3也代表着引擎执行顺序 1为最快认出是注释行 当然了这速度几乎忽略不计(ಡωಡ) )
+每行的开头两个字节如果是或##或&&就认定为注释行
+注释行在装载词库的时候是不会被装载的(装载你可以理解该行不会加载到内存里面)
+一个合法的词汇应该是 head+body
+也就是
+//.....................其它行........
+ 测试
+ OK
+//.....................其它行........
+在这中间不允许出现断行情况 也就是下面的情况
+//....................其它行........
+测试
+ //.............这里出现断行....
+// OK
+//.....................其它行........
+这种情况没有进行注释的话 装载的时候会报语法错误 但是不影响其它语句的装载(该行不会被装载到内存 直接忽略该行)
+
+这是一个%Msg%消息对于理解消息变量和函数有重要作用(不要问我为什么要这样搞...因为消息推送给插件就是这样的 这个词库引擎就是在此基础上的一个插件罢了 Android端插件就是这样的 前提是你得会Java基础)
+这是一个群聊文本消息
+[{Account=3450589608,Bubble=0,Group=Group,GroupId=647990153,GroupName=临时,MsgId=4404,Text=测试,Time=1658155928,Title=012345678912345678,Typeface=宋体,Uin=3337140142,UinName=MCSQNXA}]
+这是一个群聊语音消息
+[{Account=3450589608,Bubble=0,Group=Group,GroupId=647990153,GroupName=临时,MD5=E06C9B17A1912756582B3951B6D5F1EB,MsgId=4406,Ptt=E06C9B17A1912756582B3951B6D5F1EB.amr,Time=1658156035,Title=012345678912345678,Typeface=宋体,Uin=3337140142,UinName=MCSQNXA,Url=http://sz.c2c.qq.com/?ver=0&rkey=3062020101045b30590201010201010204cdabd1a804243938504f6a4230664d70635754576155494a5635783656396d7852615634424a6c375f57020462d57403041f0000000866696c6574797065000000013100000005636f64656300000001310400&filetype=1&voice_codec=1}]
+这是一个群聊图片消息
+[{Account=3450589608,Bubble=0,Group=Group,GroupId=647990153,GroupName=临时,Heigth=196,Img=68FBC5FA3E594E60383B91F949F57B9B.gif,MD5=68FBC5FA3E594E60383B91F949F57B9B,MsgId=4407,Size=549895,Time=1658156079,Title=012345678912345678,Typeface=宋体,Uin=3337140142,UinName=MCSQNXA,Url=https://gchat.qpic.cn/gchatpic_new/3337140142/647990153-3095359158-68FBC5FA3E594E60383B91F949F57B9B/0?term=2,Width=235}]
+这是一个心跳包消息 我喜欢叫它系统消息
+[{Account=3450589608,Heartbeat=Heartbeat,System=System}]
+如果消息出现Unauthorized则登录账号是未授权用户
+比如
+[{Account=3450589608,Heartbeat=Heartbeat,System=System,Unauthorized=Unauthorized}]
+```
+
+# 变量大全  
+
+## 登录账号/机器人账号
+```ts
+%Account%
+```
+
+## 操作者QQ
+```ts
+%QQ% %Uin% 
+```
+## 操作者昵称
+```ts
+%UinName% %昵称%
+```
+## 消息所在群聊号码
+```ts
+%群号% %GroupId% 
+```
+## 消息
+```ts
+%Msg%  
+(如果不知道是干什么的就输出一下就知道了)
+```
+
+# 消息tag
+下面这个叫做消息tag 
+既可以当键又可以当值 列如群消息没有值即tag=value也就是    
+Group=Group 操作者QQ有值那么就是 Uin=333714012   
+而不是 Uin=Uin 结合函数$AddMsg tag$说明你应该会了解  
+下面是消息类型部分消息可以使用 %...%   
+列如消息是图片那么获取图片高度可以使用%Heigth%   
+获取图片的MD5使用%MD5%   
+其它有效消息也是这样获取  
+注意大小写 是区分大小写的  
+```ts
+AtAll   艾特全体成员
+AtUin   被艾特账号
+AtName   被艾特昵称
+Id   ID
+SrcId   ID
+SrcIdSub   ID
+Ok   状态码
+No   状态码
+Op   操作
+Gif   动图
+Img   图片
+Ptt   语音
+Uin   账号
+Url   链接
+Xml   XML
+Code   码
+Info   信息
+Json   JSON
+Text   文本消息
+Temp   临时消息
+Time   时间
+Type   类型
+Emoid   表情id
+Flash   闪图
+MsgId   消息id
+Reply   回复
+Title   用户头衔
+Value   值
+Video   视频
+Width   宽度
+Bubble   气泡id
+Heigth   高度
+Notice   公告
+People   人数
+Refresh   刷新
+UinName   名称 备注.....
+UinNick   昵称
+Typeface   字体
+Withdraw   撤回
+OpName   操作者名字
+OpNick   操作者昵称
+Agree   同意
+Refuse   拒绝
+Ignore   忽略
+Account   登录账号
+Open   打开
+Close   关闭
+FileName   文件名称
+MD5   MD5
+Size   大小
+Add   增加
+Remove   移除
+Seq   序号
+EmojiFace   小黄脸表情
+EmojiSuper   超级表情
+EmojiSuperQQ   [超级QQ秀表情]OK
+```
+
+## 好友消息
+```ts
+Friend   好友消息
+PokeID   戳一戳id
+PokeIDSub   戳一戳子id
+PokeMsg   戳一戳消息
+PokeSize   戳一戳大小
+FriendListGet   获取好友列表
+FriendListGetName   获取好友备注
+FriendListGetNick   获取好友昵称
+FriendBeatABeat   好友拍一拍
+```
+## 群聊消息
+```ts
+Group   群聊消息
+Owner   群主QQ
+GroupId   群号
+GroupName   群名
+GroupListGet   获取群聊列表
+GroupListGetName   获取群聊名称
+GroupMemberListGet   获取群聊成员列表
+GroupMemberListGetAdmin   获取群聊管理员列表
+GroupMemberListGetInactive   获取群聊成员不活跃列表
+GroupMemberSignout   群聊成员退出
+GroupMemberNickModify   修改群聊成员昵称
+GroupModifyAdmin   群聊管理员修改
+GroupModifySpecialTitle   修改群聊专属头衔
+GroupNotify   群通知
+GroupProhibitAll   群聊全体禁言
+GroupProhibitMember   群聊成员禁言
+GroupMsgCacheGet   获取群聊消息缓存
+GroupMsgAnonymous   群聊消息匿名
+GroupAnonymous   群聊匿名开关变动
+GroupEnterState   进群状态(账户可以不在目标群聊) 允许任何人加群 需要发送验证消息 不允许任何人加群..........
+GroupInvitationFriend   邀请好友进群
+GroupSigninInfoGet   获取群聊打卡信息
+GroupNewMember   群聊新成员进群通知
+GroupMusic   一起听歌开关变动
+GroupFileUpload   群文件上传
+GroupFrank   坦白说
+```
+## 系统消息
+```ts
+System   系统消息
+Heartbeat   心跳消息
+FavoriteCard   名片赞
+FavoriteCardListGet   名片赞列表获取
+FavoritePersonSign   个性签名赞
+NewFriendNotify   新朋友通知
+UserSearch   搜索
+UserInfoGet   获取上线信息
+UserInfoModify   修改用户信息 可携带 Nick Gender
+UserGroupJoin   加群
+UserGroupSignout   退群
+UserFriendAdd   加好友
+UserFriendRemove   删除好友
+UserSigninDay   日签卡 打卡
+UserSigninNight   晚安卡 打卡
+```
+## 频道消息
+```ts
+Guild   频道消息
+GuildId   频道号
+GuildName   频道名
+```
+## 空间消息
+```ts
+Qzone   空间消息
+SaySay   说说
+```
+## 系统
+```ts
+FaceId
+Age   年龄
+Gender   性别
+Nick   昵称
+Status   状态
+ShowName 
+Name   备注
+Phone   电话
+Email   电子邮件
+Memo 
+AutoRemark 
+MemberLevel   成员等级
+JoinTime   加入时间
+LastSpeakTime   最后发言时间
+CreditLevel 
+Flag 
+FlagExt 
+Point 
+Concerned 
+Shielded 
+SpecialTitle 
+SpecialTitleExpireTime 
+Bytes_job 
+ApolloFlag 
+ApolloTimestamp 
+GlobalGroupLevel 
+TitleId 
+ShutupTimestap 
+GlobalGroupPoint 
+RichCardNameVer 
+VipType 
+VipLevel 
+BigClubLevel 
+BigClubFlag 
+Nameplate 
+Level   等级
+RichFlag 
+```
+## 错误
+```ts
+RequestFail   网络错误 
+Unauthorized   登录账号 未授权
+DisableStringEncoding   禁用字符串编码
+```
+
+## 词库引擎
+<details><summary>词库引擎</summary>
+<div>
+
+```ts
+测试   //这个是词汇头采用 正则表达式 进行判断
+好的   //这个是词汇体 也是回复内容
+666    //这个是词汇体 
+//这里空行意味着词汇体结束
+
+//%%是取变量运算符 %变量名%
+//发图片格式 $Img 图片路径或直链$
+//发闪照格式 $Flash 图片路径或直链$
+//发语音格式 $Ptt 语音时长(单位:秒) 语音路径或直链$
+```
+</div>
+</details>
+
+## 待编写...
