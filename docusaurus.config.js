@@ -12,7 +12,7 @@ const config = {
   url: "https://doc.guyinga.top",
   // baseUrl: '/MyNewBlog/',  // ghpages建议这样
   baseUrl: "/", // Netlify建议这样
-  onBrokenLinks: "throw",
+  onBrokenLinks: "ignore",
   onBrokenMarkdownLinks: "warn",
   favicon: "img/favicon.ico",
 
